@@ -1,0 +1,60 @@
+name: sqli-detection
+
+services:
+  db:
+    build: ./db
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD}
+      DETECTOR_DB_PASSWORD: ${DETECTOR_DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - pglogs:/var/log/postgresql
+    ports:
+      - "127.0.0.1:5432:5432"   # local-only, for development tools
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d shop"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg://shop:${APP_DB_PASSWORD}@db:5432/shop
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      CORS_ORIGINS: http://localhost:8080,http://localhost:5173
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8000:8000"
+
+  collector:
+    build:
+      context: .
+      dockerfile: collector/Dockerfile
+    environment:
+      DETECTOR_DB_URL: postgresql://detector:${DETECTOR_DB_PASSWORD}@db:5432/shop
+      LOG_DIR: /var/log/postgresql
+      MODEL_PATH: /app/model/model.joblib
+    volumes:
+      - pglogs:/var/log/postgresql:ro
+    depends_on:
+      backend:
+        condition: service_started
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "127.0.0.1:8080:80"
+
+volumes:
+  pgdata:
+  pglogs:
