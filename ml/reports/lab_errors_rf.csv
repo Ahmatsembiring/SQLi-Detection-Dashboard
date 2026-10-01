@@ -1,0 +1,25 @@
+payload,label,source,normalized,proba,pred
+"a@b.c"",,.,,'.,(",1,lab_sqlmap_login,"a@b.c"",,.,,'.,(",0.45,0
+"a@b.c'dobkCu<'"">)qneOUa",1,lab_sqlmap_login,"a@b.c'dobkcu<'"">)qneoua",0.37,0
+"bagus'dYxzJW<'"">)NvIuBx",1,lab_sqlmap_review,"bagus'dyxzjw<'"">)nviubx",0.4,0
+"kaos'prButw<'"">)ZZKNSw",1,lab_sqlmap_search,"kaos'prbutw<'"">)zzknsw",0.47,0
+"a@b.c'auxPJe<'"">)RYtpzZ",1,lab_sqlmap_login,"a@b.c'auxpje<'"">)rytpzz",0.47,0
+"bagus'SplFbJ<'"">)tcbpFR",1,lab_sqlmap_review,"bagus'splfbj<'"">)tcbpfr",0.37,0
+"a@b.c'uOGQbi<'"">)SxTDmf",1,lab_sqlmap_login,"a@b.c'uogqbi<'"">)sxtdmf",0.42,0
+"bagus'uwmEfX<'"">)YNwrBA",1,lab_sqlmap_review,"bagus'uwmefx<'"">)ynwrba",0.36,0
+"a@b.c'tJImBo<'"">)ChdFVn",1,lab_sqlmap_login,"a@b.c'tjimbo<'"">)chdfvn",0.36,0
+"bagus...)."",',(",1,lab_sqlmap_review,"bagus...)."",',(",0.47,0
+"bagus'cQeNTO<'"">)tXfWZb",1,lab_sqlmap_review,"bagus'cqento<'"">)txfwzb",0.44,0
+"kaos'axOcji<'"">)GgfpVc",1,lab_sqlmap_search,"kaos'axocji<'"">)ggfpvc",0.42,0
+"a@b.c'pJyiSw<'"">)MXooDT",1,lab_sqlmap_login,"a@b.c'pjyisw<'"">)mxoodt",0.41,0
+"bagus,,.,..""',(",1,lab_sqlmap_review,"bagus,,.,..""',(",0.44,0
+"bagus'WjAPUB<'"">)MZNcnW",1,lab_sqlmap_review,"bagus'wjapub<'"">)mzncnw",0.38,0
+"kaos'ItBLjC<'"">)noMvFf",1,lab_sqlmap_search,"kaos'itbljc<'"">)nomvff",0.42,0
+"a@b.c'grreTf<'"">)DsTDrN",1,lab_sqlmap_login,"a@b.c'grretf<'"">)dstdrn",0.44,0
+"bagus'hKPAXb<'"">)RIqumD",1,lab_sqlmap_review,"bagus'hkpaxb<'"">)riqumd",0.35,0
+"kaos'ReXSQp<'"">)BzJOvL",1,lab_sqlmap_search,"kaos'rexsqp<'"">)bzjovl",0.49,0
+"kaos'IJOLgS<'"">)bpLwXy",1,lab_sqlmap_search,"kaos'ijolgs<'"">)bplwxy",0.46,0
+"Order #INV/2025/07/88123 belum sampai, mohon dicek.",0,lab_normal_handwritten,order sqlcomment,0.87,1
+Barang ok -- recommended seller.,0,lab_normal_handwritten,barang ok sqlcomment,0.59,1
+(0721) 773456,0,lab_normal_handwritten,(0) 0,0.83,1
+sepatu (size 40-44),0,lab_normal_handwritten,sepatu (size 0-0),0.53,1
