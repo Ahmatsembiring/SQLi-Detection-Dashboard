@@ -24,13 +24,13 @@
       "fn": 6,
       "tp": 1837,
       "roc_auc": 0.9992,
-      "fit_time_s": 1.68,
+      "fit_time_s": 1.81,
       "latency": {
         "n": 1000,
-        "mean_ms": 26.246,
-        "p50_ms": 27.999,
-        "p95_ms": 31.674,
-        "max_ms": 47.392
+        "mean_ms": 7.433,
+        "p50_ms": 7.018,
+        "p95_ms": 10.316,
+        "max_ms": 25.042
       }
     },
     "MultinomialNB": {
@@ -44,13 +44,13 @@
       "fn": 8,
       "tp": 1835,
       "roc_auc": 0.9996,
-      "fit_time_s": 1.43,
+      "fit_time_s": 1.1,
       "latency": {
         "n": 1000,
-        "mean_ms": 0.981,
-        "p50_ms": 0.648,
-        "p95_ms": 3.049,
-        "max_ms": 5.022
+        "mean_ms": 0.673,
+        "p50_ms": 0.627,
+        "p95_ms": 0.977,
+        "max_ms": 1.978
       }
     },
     "LogisticRegression": {
@@ -64,13 +64,13 @@
       "fn": 13,
       "tp": 1830,
       "roc_auc": 0.9994,
-      "fit_time_s": 0.97,
+      "fit_time_s": 1.15,
       "latency": {
         "n": 1000,
-        "mean_ms": 0.714,
-        "p50_ms": 0.634,
-        "p95_ms": 1.271,
-        "max_ms": 7.936
+        "mean_ms": 0.564,
+        "p50_ms": 0.524,
+        "p95_ms": 0.802,
+        "max_ms": 1.981
       }
     },
     "LinearSVM": {
@@ -84,13 +84,13 @@
       "fn": 7,
       "tp": 1836,
       "roc_auc": 0.9995,
-      "fit_time_s": 1.42,
+      "fit_time_s": 1.93,
       "latency": {
         "n": 1000,
-        "mean_ms": 1.742,
-        "p50_ms": 1.709,
-        "p95_ms": 1.937,
-        "max_ms": 2.807
+        "mean_ms": 2.046,
+        "p50_ms": 1.926,
+        "p95_ms": 2.799,
+        "max_ms": 5.167
       }
     },
     "RuleBased": {
