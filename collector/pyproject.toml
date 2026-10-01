@@ -1,0 +1,13 @@
+[project]
+name = "collector"
+version = "0.1.0"
+description = "Streams PostgreSQL query logs and classifies bound values with the SQLi detector"
+requires-python = ">=3.11"
+dependencies = ["psycopg[binary]>=3.2", "detector"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["collector"]
