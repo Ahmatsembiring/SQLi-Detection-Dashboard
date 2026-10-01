@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* Chart + UI tokens (reference data-viz palette). Dark values are stepped, not flipped. */
+:root {
+  --surface-1: #fcfcfb;
+  --page: #f9f9f7;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --critical: #d03b3b;
+  --good: #0ca30c;
+  --warning: #fab219;
+  --serious: #ec835a;
+}
+
+body {
+  background: var(--page);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
