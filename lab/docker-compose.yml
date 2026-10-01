@@ -1,0 +1,21 @@
+# ISOLATED attack lab (NFR-06). Run separately from the main stack:
+#   docker compose -f lab/docker-compose.yml up --build --abort-on-container-exit
+# 'labnet' is internal: containers have no internet access and no ports are published,
+# so the vulnerable target is unreachable from the host and from the main application.
+name: sqli-lab
+
+services:
+  target:
+    build: ./target
+    networks: [labnet]
+    volumes:
+      - ./output:/output
+
+  attacker:
+    build: ./attacker
+    networks: [labnet]
+    depends_on: [target]
+
+networks:
+  labnet:
+    internal: true
