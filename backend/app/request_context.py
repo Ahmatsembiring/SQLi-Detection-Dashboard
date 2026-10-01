@@ -7,8 +7,9 @@ from __future__ import annotations
 
 import ipaddress
 import re
+import secrets
 from contextvars import ContextVar
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 _SAFE = re.compile(r"[^A-Za-z0-9/_.\-]")
 
@@ -19,6 +20,9 @@ class RequestActor:
     session_id: str | None = None
     ip: str | None = None
     endpoint: str | None = None
+    # Request id: the same value is often bound several times per request (count + page query);
+    # the collector uses rid to analyze each distinct value once per request.
+    request_id: str = field(default_factory=lambda: secrets.token_hex(6))
 
     def sql_tag(self) -> str:
         """Render the actor as a SQL comment. Every field is strictly sanitized: the tag is
@@ -33,7 +37,8 @@ class RequestActor:
                 ip = str(ipaddress.ip_address(self.ip))
             except ValueError:
                 pass
-        return f"/* app:uid={uid};sid={sid};ip={ip};ep={ep} */ "
+        rid = _SAFE.sub("", self.request_id)[:32] or "-"
+        return f"/* app:uid={uid};sid={sid};rid={rid};ip={ip};ep={ep} */ "
 
 
 current_actor: ContextVar[RequestActor | None] = ContextVar("current_actor", default=None)

@@ -1,0 +1,10 @@
+**/.venv
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+ml/data
+ml/reports
+lab
+.git
+.env
+frontend/dist
