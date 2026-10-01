@@ -1,0 +1,49 @@
+{
+  "raw_rows": 51283,
+  "raw_by_label": {
+    "0": 39304,
+    "1": 11979
+  },
+  "conflicting_texts_dropped": 1,
+  "duplicates_removed": 13675,
+  "final_rows": 33303,
+  "final_by_label": {
+    "0": 24089,
+    "1": 9214
+  },
+  "sqli_ratio": 0.2767,
+  "by_source": {
+    "httpparams_norm": 13629,
+    "httpparams_sqli": 8466,
+    "synthetic_search": 3622,
+    "synthetic_review": 3325,
+    "synthetic_email": 1405,
+    "synthetic_address": 889,
+    "synthetic_name": 781,
+    "synthetic_username": 417,
+    "pallt_Generic_UnionSelect": 309,
+    "fuzzdb_xplatform": 133,
+    "pallt_Auth_Bypass2": 87,
+    "pallt_Generic_TimeBased": 84,
+    "pallt_Auth_Bypass": 64,
+    "pallt_Generic_ErrorBased": 31,
+    "fuzzdb_generic": 21,
+    "synthetic_misc": 21,
+    "fuzzdb_mssql": 11,
+    "fuzzdb_mysql": 8
+  },
+  "length_by_label": {
+    "0": {
+      "mean": 23.0,
+      "median": 17.0,
+      "max": 160
+    },
+    "1": {
+      "mean": 87.5,
+      "median": 76.0,
+      "max": 242
+    }
+  },
+  "train_rows": 26642,
+  "test_rows": 6661
+}

@@ -1,0 +1,7 @@
+payload,label,source,normalized,proba,pred
+distinct,1,fuzzdb_xplatform,distinct,0.04,0
+replace,1,fuzzdb_xplatform,replace,0.0,0
+1wwis,1,httpparams_sqli,0wwis,0.01,0
+handler,1,fuzzdb_xplatform,handler,0.0,0
+ORDER BY 1,1,pallt_Generic_ErrorBased,order by 0,0.41,0
+PRINT,1,fuzzdb_xplatform,print,0.01,0

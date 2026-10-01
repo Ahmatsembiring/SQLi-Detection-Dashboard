@@ -1,0 +1,13 @@
+[project]
+name = "detector"
+version = "0.1.0"
+description = "SQL injection detection pipeline: preprocessing, n-gram features, Random Forest inference"
+requires-python = ">=3.11"
+dependencies = ["scikit-learn>=1.5", "joblib>=1.4", "numpy>=1.26"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["detector"]
