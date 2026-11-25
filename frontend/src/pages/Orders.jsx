@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { api, fmtDate, rupiah } from "../api";
-import { Alert, Badge, Button, Card, Empty, Spinner } from "../components/ui";
+import FeaturedPromo from "../components/FeaturedPromo";
+import { Alert, Badge, Button, Card, Spinner } from "../components/ui";
 
 export const STATUS = {
   pending: ["yellow", "Menunggu pembayaran"],
@@ -36,7 +37,31 @@ export default function Orders() {
       <h1 className="text-xl font-bold">Riwayat pesanan</h1>
       {location.state?.justOrdered && <Alert tone="green">Pesanan berhasil dibuat. Terima kasih!</Alert>}
       {error && <Alert>{error}</Alert>}
-      {orders.length === 0 && <Empty>Belum ada pesanan.</Empty>}
+      {orders.length === 0 && (
+        <div className="space-y-6">
+          <Card className="p-6 text-center sm:p-8">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-xl font-bold text-amber-900">
+              ☕
+            </div>
+            <h2 className="mt-3 text-lg font-bold text-stone-900">Belum Ada Riwayat Pesanan</h2>
+            <p className="mx-auto mt-1 max-w-md text-sm text-stone-600">
+              Kamu belum pernah melakukan pemesanan. Coba nikmati racikan kopi spesialti unggulan KopiAman di bawah ini!
+            </p>
+            <div className="mt-4">
+              <Link
+                to="/"
+                className="inline-flex items-center justify-center rounded-lg bg-amber-800 px-4 py-2 text-sm font-medium text-amber-50 transition hover:bg-amber-900"
+              >
+                Mulai Pesan Kopi
+              </Link>
+            </div>
+          </Card>
+          <FeaturedPromo
+            title="Mulai Pesanan Pertamamu dengan Produk Unggulan"
+            subtitle="Biji kopi pilihan Nusantara & menu favorit pelanggan KopiAman."
+          />
+        </div>
+      )}
       {orders.map((o) => (
         <Card key={o.id} className="p-4">
           <div className="flex flex-wrap items-center justify-between gap-2">

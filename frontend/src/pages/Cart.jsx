@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { api, rupiah } from "../api";
 import { useAuth } from "../auth";
 import { useCart } from "../cart";
-import { Alert, Button, Card, Empty, ProductImage, Textarea } from "../components/ui";
+import FeaturedPromo from "../components/FeaturedPromo";
+import { Alert, Button, Card, ProductImage, Textarea } from "../components/ui";
 
 export default function Cart() {
   const { user } = useAuth();
@@ -30,7 +31,31 @@ export default function Cart() {
   };
 
   if (items.length === 0) {
-    return <Empty>Keranjang masih kosong. <Link to="/" className="text-amber-800 hover:underline">Lihat menu kopi</Link></Empty>;
+    return (
+      <div className="space-y-6">
+        <Card className="p-6 text-center sm:p-8">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-xl font-bold text-amber-900">
+            ☕
+          </div>
+          <h1 className="mt-3 text-lg font-bold text-stone-900">Keranjang Kopi Masih Kosong</h1>
+          <p className="mx-auto mt-1 max-w-md text-sm text-stone-600">
+            Belum ada produk di keranjangmu. Yuk pilih biji kopi spesialti, cold brew, atau alat seduh favoritmu dari rekomendasi di bawah ini!
+          </p>
+          <div className="mt-4">
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center rounded-lg bg-amber-800 px-4 py-2 text-sm font-medium text-amber-50 transition hover:bg-amber-900"
+            >
+              Jelajahi Menu Kopi
+            </Link>
+          </div>
+        </Card>
+        <FeaturedPromo
+          title="Rekomendasi Kopi Unggulan untuk Keranjangmu"
+          subtitle="Fresh roasted mingguan — klik '+ Keranjang' langsung untuk mulai memesan."
+        />
+      </div>
+    );
   }
 
   return (
