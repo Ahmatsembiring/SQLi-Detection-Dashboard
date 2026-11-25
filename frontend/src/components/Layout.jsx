@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../auth";
 import { useCart } from "../cart";
+import WelcomeCoffeeModal from "./WelcomeCoffeeModal";
 
 const navCls = ({ isActive }) =>
   `rounded-lg px-3 py-2 text-sm font-medium transition ${
@@ -43,6 +44,7 @@ export default function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <WelcomeCoffeeModal />
       <header className="sticky top-0 z-40 border-b border-amber-200/15 bg-[#22140c]/95 text-amber-50 shadow-[0_6px_24px_rgba(24,12,6,0.2)] backdrop-blur-md">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8">
           <Link to="/" onClick={close} className="flex items-center gap-2.5 text-lg font-bold text-amber-50">
