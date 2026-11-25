@@ -85,6 +85,14 @@ CATALOG = {
          "Kue pisang panggang lembut bertabur kacang walnut renyah, tanpa pengawet."),
     ],
 }
+CATEGORY_IMAGES = {
+    "Single Origin Arabika": "/images/coffee/arabika.jpg",
+    "Robusta Nusantara": "/images/coffee/robusta.jpg",
+    "House Blend & Espresso": "/images/coffee/espresso-blend.jpg",
+    "Ready-to-Drink & Cold Brew": "/images/coffee/cold-brew.jpg",
+    "Alat Seduh (Brewing Gear)": "/images/coffee/brewing-gear.jpg",
+    "Pastry & Pendamping": "/images/coffee/pastry.jpg",
+}
 CATEGORY_DESCRIPTIONS = {
     "Single Origin Arabika": "Biji kopi Arabika pilihan dari berbagai daerah penghasil terbaik di Indonesia.",
     "Robusta Nusantara": "Fine Robusta petik merah dengan karakter kuat, body tebal, dan krema melimpah.",
@@ -130,7 +138,7 @@ def run() -> None:
                 db.flush()
                 for pname, price, desc in items:
                     p = Product(name=pname, price=Decimal(price), stock=rnd.randint(8, 95), category_id=cat.id,
-                                description=desc)
+                                description=desc, image_url=CATEGORY_IMAGES.get(cat_name))
                     db.add(p)
                     db.flush()
                     for u in rnd.sample(users[:4], rnd.randint(1, 3)):

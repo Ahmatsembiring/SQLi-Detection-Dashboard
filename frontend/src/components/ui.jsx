@@ -65,7 +65,15 @@ export function Select({ label, className, children, ...props }) {
 }
 
 export function Card({ className, ...props }) {
-  return <div className={cx("rounded-xl border border-stone-200/90 bg-white shadow-sm", className)} {...props} />;
+  return (
+    <div
+      className={cx(
+        "rounded-2xl border border-amber-950/10 bg-[#fffdf9]/95 shadow-[0_6px_24px_rgba(45,26,14,0.06)] backdrop-blur-sm",
+        className
+      )}
+      {...props}
+    />
+  );
 }
 
 export function Badge({ tone = "slate", className, children }) {
@@ -144,29 +152,43 @@ export function Pagination({ page, size, total, onPage }) {
   );
 }
 
-/** Deterministic coffee-palette placeholder image for products without a photo. */
-export function ProductImage({ product, className }) {
-  if (product.image_url) {
-    return <img src={product.image_url} alt={product.name} className={cx("object-cover", className)} />;
+const CATEGORY_IMAGES = [
+  [/arabika|gayo|toraja|flores|kintamani|ijen|mandheling/i, "/images/coffee/arabika.jpg"],
+  [/robusta|lampung|temanggung|sidikalang|dampit/i, "/images/coffee/robusta.jpg"],
+  [/espresso|blend|roast|decaf/i, "/images/coffee/espresso-blend.jpg"],
+  [/cold brew|iced|latte|susu gula aren|botol|ready-to-drink/i, "/images/coffee/cold-brew.jpg"],
+  [/alat seduh|brew|v60|kettle|grinder|timbangan|french press|filter/i, "/images/coffee/brewing-gear.jpg"],
+  [/pastry|croissant|cinnamon|brownies|banana bread/i, "/images/coffee/pastry.jpg"],
+];
+
+function resolveCoffeeImage(product) {
+  if (product.image_url) return product.image_url;
+  const hay = `${product.category?.name || ""} ${product.name || ""}`;
+  for (const [re, path] of CATEGORY_IMAGES) {
+    if (re.test(hay)) return path;
   }
-  const palettes = [
-    ["#4a2c1a", "#78350f"], // espresso
-    ["#7c2d12", "#b45309"], // roasted caramel
-    ["#3f2305", "#6b4423"], // dark roast
-    ["#5c4033", "#a16207"], // honey process
-    ["#292524", "#57534e"], // brewing gear slate
-    ["#713f12", "#ca8a04"], // golden pastry
+  const fallback = [
+    "/images/coffee/arabika.jpg",
+    "/images/coffee/robusta.jpg",
+    "/images/coffee/espresso-blend.jpg",
+    "/images/coffee/cold-brew.jpg",
+    "/images/coffee/brewing-gear.jpg",
+    "/images/coffee/pastry.jpg",
   ];
-  const [c1, c2] = palettes[(product.category_id || product.id || 0) % palettes.length];
-  const initials = product.name.split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  return fallback[(product.category_id || product.id || 0) % fallback.length];
+}
+
+/** High-resolution specialty coffee product photo with smart category mapping. */
+export function ProductImage({ product, className }) {
+  const src = resolveCoffeeImage(product);
   return (
-    <div
-      className={cx("flex flex-col items-center justify-center gap-1 text-amber-50/95", className)}
-      style={{ background: `linear-gradient(135deg, ${c1}, ${c2})` }}
-      aria-hidden="true"
-    >
-      <span className="text-2xl font-bold tracking-wide">{initials}</span>
-      <span className="text-[10px] font-medium uppercase tracking-widest text-amber-200/80">KopiAman</span>
+    <div className={cx("overflow-hidden bg-[#2b1a10]", className)}>
+      <img
+        src={src}
+        alt={product.name}
+        loading="lazy"
+        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+      />
     </div>
   );
 }
