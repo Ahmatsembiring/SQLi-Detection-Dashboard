@@ -58,7 +58,7 @@ export default function Home() {
         </div>
         <h1 className="mt-3 text-2xl font-bold tracking-tight md:text-3xl">Kopi Spesialti Nusantara, Diseduh dengan Aman</h1>
         <p className="mt-1.5 max-w-2xl text-sm text-amber-100/90">
-          Jelajahi single origin Arabika, fine Robusta Lampung, house blend espresso, cold brew, hingga alat seduh manual langsung dari roastery kami.
+          Jelajahi single origin Arabika, fine Robusta Lampung, house blend espresso, cold brew, hingga alat seduh manual langsung dari roastery kami — tanpa perlu login untuk melihat katalog.
         </p>
         <form
           className="mt-5 flex gap-2"
@@ -76,6 +76,21 @@ export default function Home() {
           />
           <Button type="submit" variant="secondary" className="shrink-0 font-semibold">Cari</Button>
         </form>
+      </section>
+
+      <section className="grid gap-3 sm:grid-cols-3">
+        <Card className="p-3.5">
+          <div className="text-xs font-bold text-amber-900">Roasting Segar Mingguan</div>
+          <p className="mt-0.5 text-xs text-stone-600">Setiap batch dipanggang terbatas dan dikemas dengan one-way valve bag.</p>
+        </Card>
+        <Card className="p-3.5">
+          <div className="text-xs font-bold text-amber-900">Biji Pilihan Nusantara</div>
+          <p className="mt-0.5 text-xs text-stone-600">Langsung dari petani Aceh Gayo, Toraja, Flores, Kintamani, hingga Lampung.</p>
+        </Card>
+        <Card className="p-3.5">
+          <div className="text-xs font-bold text-amber-900">Keamanan OWASP &amp; Monitoring</div>
+          <p className="mt-0.5 text-xs text-stone-600">Seluruh input publik &amp; transaksi terlindungi ORM dan dipantau real-time.</p>
+        </Card>
       </section>
 
       {categories.length > 0 && (

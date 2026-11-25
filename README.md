@@ -1,9 +1,9 @@
-# Deteksi SQL Injection Real-Time — N-Gram + Random Forest pada Log Aktivitas Database
+# KopiAman — Deteksi SQL Injection Real-Time & Lab OWASP pada Toko Kopi
 
-Prototipe tugas akhir: toko online **TokoAman** (aktor Admin & User) yang seluruh aktivitas
+Prototipe tugas akhir: toko kopi spesialti **KopiAman — Roastery & Coffee Shop** (aktor Admin, User, & Pengunjung Publik/Anonim) yang diperkuat standar **OWASP Top 10 / ASVS**, di mana seluruh aktivitas
 database-nya dicatat PostgreSQL, di-*stream* oleh log collector, lalu setiap nilai input
 diklasifikasikan **Normal / SQLi** oleh model *character n-gram TF-IDF + Random Forest*.
-Hasil deteksi beserta **pengguna pelakunya** tampil real-time di dashboard admin.
+Hasil deteksi beserta **pengguna pelaku (atau IP anonim untuk serangan dari luar)** tampil real-time di dashboard admin dan **Lab OWASP Interaktif (`/admin/owasp-lab`)**.
 
 ```
 User/Admin ─► React (nginx) ─► FastAPI (ORM, bound params) ─► PostgreSQL
@@ -32,11 +32,11 @@ Akun demo (dibuat oleh `backend/app/seed.py`):
 
 | Peran | Email | Password |
 |---|---|---|
-| Admin | nilai `ADMIN_EMAIL` di `.env` (default `admin@tokoaman.id`) | `ADMIN_PASSWORD` (default `Admin12345!`) |
+| Admin | nilai `ADMIN_EMAIL` di `.env` (default `admin@kopiaman.id`) | `ADMIN_PASSWORD` (default `Admin12345!`) |
 | User | `budi@example.com`, `siti@example.com`, `rizky@example.com`, `dewi@example.com`, `mallory@example.com` | `Password123!` |
 
-Coba: login sebagai `mallory@example.com`, cari `kaos' UNION SELECT password_hash FROM users--`,
-lalu buka dashboard admin di tab lain — baris SQLi muncul seketika dengan nama pelaku.
+Coba: buka halaman utama **KopiAman** tanpa login (atau login sebagai `mallory@example.com`), cari `gayo' UNION SELECT password_hash FROM users--`,
+lalu buka dashboard admin (`/admin`) atau **Lab OWASP** (`/admin/owasp-lab`) di tab lain — baris SQLi muncul seketika dengan nama pelaku atau IP anonim.
 
 ## Struktur repositori
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { api } from "../../api";
+import { api, getToken } from "../../api";
 import { Alert, Badge, Button, Card, Empty, Input, LabelBadge, Select, SeverityBadge } from "../../components/ui";
 import { useMonitorSocket } from "../../useMonitorSocket";
 
@@ -82,7 +82,7 @@ export default function OwaspLab() {
     setBusy(true);
     setNotice(null);
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
       let r;
       if (ep === "/api/auth/login") {
         r = await rawFetch("/api/auth/login", { method: "POST", body: { email: raw, password: "lab-probe-password" } });
@@ -139,7 +139,7 @@ export default function OwaspLab() {
         },
         {
           title: "Akses IDOR /api/orders/999999 (Resource tidak dimiliki)",
-          run: () => rawFetch("/api/orders/999999", { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }),
+          run: () => rawFetch("/api/orders/999999", { headers: { Authorization: `Bearer ${getToken()}` } }),
           ok: (r) => r.status === 404,
           msg: "Ditolak dengan 404 Not Found — validasi kepemilikan order aktif (anti-IDOR).",
         },
@@ -245,7 +245,7 @@ export default function OwaspLab() {
         rawFetch("/"),
         rawFetch("/api/admin/products", {
           method: "POST",
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Bearer ${getToken()}` },
           body: { name: "Kopi Probe", price: "50000", stock: 1, image_url: "javascript:alert(1)" },
         }),
       ]);
