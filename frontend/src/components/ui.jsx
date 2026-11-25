@@ -141,12 +141,43 @@ export function Modal({ open, onClose, title, children, wide }) {
 
 export function Pagination({ page, size, total, onPage }) {
   const pages = Math.max(1, Math.ceil(total / size));
+  const from = total === 0 ? 0 : (page - 1) * size + 1;
+  const to = Math.min(page * size, total);
+  const go = (n) => {
+    onPage(n);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const navBtn =
+    "inline-flex h-9 items-center justify-center gap-1 rounded-full border border-amber-900/15 bg-[#fffdf9] px-4 text-xs font-semibold text-stone-700 shadow-sm transition hover:border-amber-700/40 hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40";
   return (
-    <div className="flex items-center justify-between py-3 text-sm text-slate-600">
-      <span className="tabular">{total} data · halaman {page} dari {pages}</span>
-      <div className="flex gap-2">
-        <Button variant="secondary" size="sm" disabled={page <= 1} onClick={() => onPage(page - 1)}>← Sebelumnya</Button>
-        <Button variant="secondary" size="sm" disabled={page >= pages} onClick={() => onPage(page + 1)}>Berikutnya →</Button>
+    <div className="mt-4 flex flex-col items-center gap-3 rounded-2xl border border-amber-950/10 bg-[#fffdf9]/80 px-4 py-4 shadow-[0_6px_20px_rgba(45,26,14,0.05)] backdrop-blur-sm sm:flex-row sm:justify-between">
+      <span className="tabular text-xs text-stone-600">
+        Menampilkan <span className="font-semibold text-stone-900">{from}–{to}</span> dari{" "}
+        <span className="font-semibold text-stone-900">{total}</span> produk kopi
+      </span>
+      <div className="flex items-center gap-1.5">
+        <button type="button" className={navBtn} disabled={page <= 1} onClick={() => go(page - 1)} aria-label="Halaman sebelumnya">
+          ← <span className="hidden sm:inline">Sebelumnya</span>
+        </button>
+        {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+          <button
+            key={n}
+            type="button"
+            onClick={() => go(n)}
+            aria-current={n === page ? "page" : undefined}
+            className={cx(
+              "tabular h-9 w-9 rounded-full text-xs font-bold transition",
+              n === page
+                ? "bg-gradient-to-br from-amber-600 to-amber-800 text-amber-50 shadow-md"
+                : "border border-amber-900/15 bg-[#fffdf9] text-stone-700 hover:border-amber-700/40 hover:bg-amber-50"
+            )}
+          >
+            {n}
+          </button>
+        ))}
+        <button type="button" className={navBtn} disabled={page >= pages} onClick={() => go(page + 1)} aria-label="Halaman berikutnya">
+          <span className="hidden sm:inline">Berikutnya</span> →
+        </button>
       </div>
     </div>
   );

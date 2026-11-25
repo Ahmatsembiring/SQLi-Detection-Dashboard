@@ -26,7 +26,7 @@ export default function Home() {
 
   useEffect(() => {
     setData(null);
-    api("/api/products", { params: { q, category_id: categoryId, sort, page, size: 12 } })
+    api("/api/products", { params: { q, category_id: categoryId, sort, page, size: 20 } })
       .then(setData)
       .catch((e) => setError(e.message));
   }, [q, categoryId, sort, page]);
