@@ -27,17 +27,17 @@ export default function Register() {
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
   return (
-    <section
-      className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-4 py-12 sm:px-6 lg:px-10"
-      style={{
-        backgroundImage:
-          "linear-gradient(120deg, rgba(24, 13, 7, 0.70) 0%, rgba(44, 24, 12, 0.52) 50%, rgba(24, 13, 7, 0.76) 100%), url('/images/coffee/plantation-bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <section className="relative flex w-full flex-1 items-center justify-center overflow-hidden bg-[#1a0f08] px-4 py-12 sm:px-6 lg:px-10">
+      <div
+        aria-hidden="true"
+        className="animate-hero-zoom absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "linear-gradient(120deg, rgba(24, 13, 7, 0.70) 0%, rgba(44, 24, 12, 0.52) 50%, rgba(24, 13, 7, 0.76) 100%), url('/images/coffee/plantation-bg.jpg')",
+        }}
+      />
       <div className="relative z-10 grid w-full max-w-5xl items-center gap-10 lg:grid-cols-12">
-        <div className="hidden space-y-4 text-amber-50 lg:col-span-6 lg:block">
+        <div className="animate-fade-up hidden space-y-4 text-amber-50 lg:col-span-6 lg:block">
           <span className="inline-block rounded-full border border-amber-200/30 bg-black/30 px-3.5 py-1 text-xs font-medium tracking-wide text-amber-200 backdrop-blur-sm">
             Bergabung dengan Komunitas KopiAman
           </span>
@@ -49,7 +49,10 @@ export default function Register() {
           </p>
         </div>
 
-        <Card className="mx-auto w-full max-w-sm border-amber-100/40 bg-[#fffdf9]/95 p-5 shadow-[0_20px_50px_rgba(18,9,4,0.45)] backdrop-blur-md sm:p-6 lg:col-span-6">
+        <Card
+          style={{ animationDelay: "120ms" }}
+          className="animate-fade-up mx-auto w-full max-w-sm border-amber-100/40 bg-[#fffdf9]/95 p-5 shadow-[0_20px_50px_rgba(18,9,4,0.45)] backdrop-blur-md sm:p-6 lg:col-span-6"
+        >
           <h1 className="font-display mb-1 text-2xl font-bold text-stone-900">Daftar Akun</h1>
           <p className="mb-4 text-xs text-stone-500">Buat akun baru atau daftar instan dengan Gmail.</p>
           <form onSubmit={submit} className="space-y-3">

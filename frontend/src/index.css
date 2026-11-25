@@ -34,3 +34,60 @@ body {
 }
 
 .tabular { font-variant-numeric: tabular-nums; }
+
+/* ---- Luxury coffee-shop micro-animations (60fps GPU-composited) ---- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroZoom {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-fade-up {
+  opacity: 0;
+  animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-hero-zoom {
+  animation: heroZoom 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-float {
+  animation: floatGentle 3.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-hero-zoom,
+  .animate-float {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

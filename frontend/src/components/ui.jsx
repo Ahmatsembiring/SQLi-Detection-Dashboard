@@ -13,7 +13,7 @@ export function Button({ variant = "primary", size = "md", className, ...props }
   const sizes = { sm: "px-2.5 py-1 text-xs", md: "px-4 py-2 text-sm", lg: "px-5 py-2.5 text-base" };
   return (
     <button
-      className={cx("inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition",
+      className={cx("inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition duration-200 active:scale-[0.97]",
         "disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700",
         variants[variant], sizes[size], className)}
       {...props}

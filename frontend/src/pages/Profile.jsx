@@ -123,7 +123,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
+    <div className="animate-fade-up mx-auto max-w-2xl space-y-5">
       {/* Profile Hero Header */}
       <Card className="overflow-hidden">
         <div className="h-24 bg-gradient-to-r from-[#3b2112] via-[#5c3317] to-[#854d0e]" />

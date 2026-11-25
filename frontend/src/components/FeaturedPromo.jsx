@@ -55,8 +55,12 @@ export default function FeaturedPromo({ title = "Produk Unggulan KopiAman", subt
       )}
 
       <div className="grid grid-cols-2 gap-3.5 md:grid-cols-4">
-        {items.map((p) => (
-          <Card key={p.id} className="group flex flex-col overflow-hidden transition hover:shadow-md">
+        {items.map((p, idx) => (
+          <Card
+            key={p.id}
+            style={{ animationDelay: `${idx * 70}ms` }}
+            className="animate-fade-up group flex flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-[0_14px_32px_rgba(45,26,14,0.12)]"
+          >
             <Link to={`/products/${p.id}`}>
               <ProductImage product={p} className="aspect-[4/3] w-full" />
             </Link>
