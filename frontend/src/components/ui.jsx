@@ -152,30 +152,56 @@ export function Pagination({ page, size, total, onPage }) {
   );
 }
 
-const CATEGORY_IMAGES = [
-  [/arabika|gayo|toraja|flores|kintamani|ijen|mandheling/i, "/images/coffee/arabika.jpg"],
-  [/robusta|lampung|temanggung|sidikalang|dampit/i, "/images/coffee/robusta.jpg"],
-  [/espresso|blend|roast|decaf/i, "/images/coffee/espresso-blend.jpg"],
-  [/cold brew|iced|latte|susu gula aren|botol|ready-to-drink/i, "/images/coffee/cold-brew.jpg"],
-  [/alat seduh|brew|v60|kettle|grinder|timbangan|french press|filter/i, "/images/coffee/brewing-gear.jpg"],
-  [/pastry|croissant|cinnamon|brownies|banana bread/i, "/images/coffee/pastry.jpg"],
+const CATEGORY_GALLERIES = [
+  [/arabika|gayo|toraja|flores|kintamani|ijen|mandheling/i, [
+    "/images/coffee/arabika-2.jpg",
+    "/images/coffee/arabika-3.jpg",
+    "/images/coffee/arabika-4.jpg",
+    "/images/coffee/arabika.jpg",
+    "/images/coffee/espresso-blend.jpg",
+  ]],
+  [/robusta|lampung|temanggung|sidikalang|dampit/i, [
+    "/images/coffee/robusta-2.jpg",
+    "/images/coffee/robusta.jpg",
+    "/images/coffee/arabika.jpg",
+    "/images/coffee/espresso-blend.jpg",
+  ]],
+  [/espresso|blend|roast|decaf/i, [
+    "/images/coffee/espresso-blend.jpg",
+    "/images/coffee/robusta-2.jpg",
+    "/images/coffee/arabika-2.jpg",
+    "/images/coffee/robusta.jpg",
+  ]],
+  [/cold brew|iced|latte|susu gula aren|botol|ready-to-drink/i, [
+    "/images/coffee/cold-brew.jpg",
+    "/images/coffee/cold-brew-2.jpg",
+  ]],
+  [/alat seduh|brew|v60|kettle|grinder|timbangan|french press|filter/i, [
+    "/images/coffee/brewing-gear.jpg",
+    "/images/coffee/gear-2.jpg",
+  ]],
+  [/pastry|croissant|cinnamon|brownies|banana bread/i, [
+    "/images/coffee/pastry.jpg",
+    "/images/coffee/pastry-2.jpg",
+  ]],
 ];
 
 function resolveCoffeeImage(product) {
   if (product.image_url) return product.image_url;
   const hay = `${product.category?.name || ""} ${product.name || ""}`;
-  for (const [re, path] of CATEGORY_IMAGES) {
-    if (re.test(hay)) return path;
+  const idx = Number(product.id || 0);
+  for (const [re, gallery] of CATEGORY_GALLERIES) {
+    if (re.test(hay)) return gallery[idx % gallery.length];
   }
   const fallback = [
-    "/images/coffee/arabika.jpg",
-    "/images/coffee/robusta.jpg",
+    "/images/coffee/arabika-2.jpg",
+    "/images/coffee/robusta-2.jpg",
     "/images/coffee/espresso-blend.jpg",
     "/images/coffee/cold-brew.jpg",
     "/images/coffee/brewing-gear.jpg",
     "/images/coffee/pastry.jpg",
   ];
-  return fallback[(product.category_id || product.id || 0) % fallback.length];
+  return fallback[idx % fallback.length];
 }
 
 /** High-resolution specialty coffee product photo with smart category mapping. */

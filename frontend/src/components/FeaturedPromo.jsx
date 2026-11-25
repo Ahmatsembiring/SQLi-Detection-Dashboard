@@ -56,9 +56,9 @@ export default function FeaturedPromo({ title = "Produk Unggulan KopiAman", subt
 
       <div className="grid grid-cols-2 gap-3.5 md:grid-cols-4">
         {items.map((p) => (
-          <Card key={p.id} className="flex flex-col overflow-hidden transition hover:shadow-md">
+          <Card key={p.id} className="group flex flex-col overflow-hidden transition hover:shadow-md">
             <Link to={`/products/${p.id}`}>
-              <ProductImage product={p} className="aspect-square w-full" />
+              <ProductImage product={p} className="aspect-[4/3] w-full" />
             </Link>
             <div className="flex flex-1 flex-col p-3">
               <span className="text-[11px] font-medium text-amber-800">{p.category?.name}</span>

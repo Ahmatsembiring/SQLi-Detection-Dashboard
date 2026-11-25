@@ -171,21 +171,21 @@ export default function Home() {
         <Empty>Produk kopi tidak ditemukan.</Empty>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {data.items.map((p) => (
               <Card key={p.id} className="group flex flex-col overflow-hidden transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(45,26,14,0.12)]">
                 <Link to={`/products/${p.id}`}>
-                  <ProductImage product={p} className="aspect-square w-full" />
+                  <ProductImage product={p} className="aspect-[4/3] w-full" />
                 </Link>
-                <div className="flex flex-1 flex-col p-3.5">
-                  <span className="text-xs font-medium text-amber-800">{p.category?.name}</span>
+                <div className="flex flex-1 flex-col p-3">
+                  <span className="text-[11px] font-medium text-amber-800">{p.category?.name}</span>
                   <Link to={`/products/${p.id}`} className="mt-0.5 line-clamp-2 text-sm font-semibold text-stone-900 hover:text-amber-800">{p.name}</Link>
-                  <div className="mt-1.5 font-bold text-stone-900">{rupiah(p.price)}</div>
-                  <div className="mt-0.5 text-xs text-stone-500">
+                  <div className="mt-1.5 text-sm font-bold text-stone-900">{rupiah(p.price)}</div>
+                  <div className="mt-0.5 text-[11px] text-stone-500">
                     {p.avg_rating ? `★ ${p.avg_rating.toFixed(1)} (${p.review_count})` : "Belum ada ulasan"} · stok {p.stock}
                   </div>
                   {user?.role === "user" && (
-                    <Button size="sm" className="mt-auto mt-3" disabled={p.stock === 0} onClick={() => addToCart(p)}>
+                    <Button size="sm" className="mt-auto mt-2.5 w-full" disabled={p.stock === 0} onClick={() => addToCart(p)}>
                       {p.stock === 0 ? "Stok habis" : "+ Keranjang"}
                     </Button>
                   )}
