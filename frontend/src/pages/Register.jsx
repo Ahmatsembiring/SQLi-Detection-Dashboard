@@ -31,13 +31,13 @@ export default function Register() {
       <form onSubmit={submit} className="space-y-3">
         <Input label="Nama lengkap" name="name" required maxLength={100} value={form.name} onChange={set("name")} />
         <Input label="Email" name="email" type="email" required value={form.email} onChange={set("email")} />
-        <Input label="Password (min. 8 karakter)" name="password" type="password" required minLength={8}
+        <Input label="Password (min. 8 karakter, huruf besar, kecil & angka)" name="password" type="password" required minLength={8}
           autoComplete="new-password" value={form.password} onChange={set("password")} />
         {error && <Alert>{error}</Alert>}
         <Button type="submit" className="w-full" disabled={busy}>{busy ? "Memproses…" : "Daftar"}</Button>
       </form>
-      <p className="mt-4 text-center text-sm text-slate-600">
-        Sudah punya akun? <Link to="/login" className="text-blue-600 hover:underline">Masuk</Link>
+      <p className="mt-4 text-center text-sm text-stone-600">
+        Sudah punya akun? <Link to="/login" className="text-amber-800 hover:underline">Masuk</Link>
       </p>
     </Card>
   );

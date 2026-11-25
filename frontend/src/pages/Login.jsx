@@ -38,8 +38,8 @@ export default function Login() {
         {error && <Alert>{error}</Alert>}
         <Button type="submit" className="w-full" disabled={busy}>{busy ? "Memproses…" : "Masuk"}</Button>
       </form>
-      <p className="mt-4 text-center text-sm text-slate-600">
-        Belum punya akun? <Link to="/register" className="text-blue-600 hover:underline">Daftar</Link>
+      <p className="mt-4 text-center text-sm text-stone-600">
+        Belum punya akun? <Link to="/register" className="text-amber-800 hover:underline">Daftar</Link>
       </p>
     </Card>
   );

@@ -47,7 +47,7 @@ export default function Profile() {
         <h2 className="mb-3 font-semibold">Ganti password</h2>
         <form onSubmit={changePassword} className="space-y-3">
           <Input label="Password lama" type="password" required value={pw.old_password} onChange={(e) => setPw({ ...pw, old_password: e.target.value })} />
-          <Input label="Password baru (min. 8 karakter)" type="password" required minLength={8} value={pw.new_password}
+          <Input label="Password baru (min. 8 karakter, huruf besar, kecil & angka)" type="password" required minLength={8} value={pw.new_password}
             onChange={(e) => setPw({ ...pw, new_password: e.target.value })} />
           <Button type="submit" variant="secondary">Ganti password</Button>
         </form>

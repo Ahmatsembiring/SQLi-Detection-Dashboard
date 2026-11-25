@@ -39,19 +39,19 @@ export default function ProductDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/" className="text-sm text-blue-600 hover:underline">← Kembali belanja</Link>
+      <Link to="/" className="text-sm text-amber-800 hover:underline">← Kembali ke menu kopi</Link>
       <Card className="grid gap-6 p-5 md:grid-cols-2">
         <ProductImage product={product} className="aspect-square w-full rounded-xl" />
         <div className="space-y-3">
-          <span className="text-sm text-slate-500">{product.category?.name}</span>
-          <h1 className="text-2xl font-bold">{product.name}</h1>
-          <div className="text-2xl font-semibold text-blue-700">{rupiah(product.price)}</div>
-          <div className="text-sm text-slate-600">
+          <span className="text-sm font-medium text-amber-800">{product.category?.name}</span>
+          <h1 className="text-2xl font-bold text-stone-900">{product.name}</h1>
+          <div className="text-2xl font-bold text-amber-900">{rupiah(product.price)}</div>
+          <div className="text-sm text-stone-600">
             {product.avg_rating ? `★ ${product.avg_rating.toFixed(1)} dari ${product.review_count} ulasan` : "Belum ada ulasan"} · stok {product.stock}
           </div>
-          <p className="text-slate-700">{product.description}</p>
+          <p className="leading-relaxed text-stone-700">{product.description}</p>
           {user?.role === "user" ? (
-            <div className="flex items-end gap-2">
+            <div className="flex items-end gap-2 pt-2">
               <div className="w-24">
                 <Select label="Jumlah" value={qty} onChange={(e) => setQty(Number(e.target.value))}>
                   {Array.from({ length: Math.min(10, product.stock) }, (_, i) => i + 1).map((n) => <option key={n}>{n}</option>)}
@@ -64,17 +64,17 @@ export default function ProductDetail() {
                   navigate("/cart");
                 }}
               >
-                Beli sekarang
+                Pesan sekarang
               </Button>
             </div>
           ) : !user ? (
-            <p className="text-sm text-slate-600"><Link to="/login" className="text-blue-600 hover:underline">Masuk</Link> untuk membeli.</p>
+            <p className="text-sm text-stone-600"><Link to="/login" className="text-amber-800 hover:underline">Masuk</Link> untuk memesan kopi.</p>
           ) : null}
         </div>
       </Card>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Ulasan pembeli</h2>
+        <h2 className="text-lg font-semibold">Ulasan penikmat kopi</h2>
         {msg && <Alert tone={msg.tone}>{msg.text}</Alert>}
         {user?.role === "user" && (
           <Card className="p-4">
@@ -85,7 +85,7 @@ export default function ProductDetail() {
                 </Select>
               </div>
               <Textarea label="Ulasan" rows={3} required maxLength={2000} value={comment} onChange={(e) => setComment(e.target.value)}
-                placeholder="Bagaimana kualitas produknya?" />
+                placeholder="Bagaimana aroma, body, atau rasa seduhan kopi ini?" />
               <Button type="submit">Kirim ulasan</Button>
             </form>
           </Card>

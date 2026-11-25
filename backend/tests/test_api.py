@@ -108,3 +108,40 @@ def test_admin_product_crud(client, admin_headers):
                    headers=admin_headers)
     assert r.json()["name"] == "Topi Baseball"
     assert client.delete(f"/api/admin/products/{pid}", headers=admin_headers).status_code == 204
+
+
+def test_owasp_security_headers_and_posture(client, admin_headers):
+    r = client.get("/api/health")
+    assert r.headers.get("x-content-type-options") == "nosniff"
+    assert r.headers.get("x-frame-options") == "DENY"
+    assert "camera=()" in r.headers.get("permissions-policy", "")
+
+    p = client.get("/api/monitor/security-posture", headers=admin_headers)
+    assert p.status_code == 200
+    assert p.headers.get("cache-control") == "no-store"
+    ids = {c["id"] for c in p.json()["controls"]}
+    assert {"A01", "A02", "A03", "A05", "A07", "A09"}.issubset(ids)
+
+
+def test_owasp_password_policy_and_safe_image_url(client, admin_headers):
+    # Weak password (no uppercase / no digit) rejected on register
+    r = client.post("/api/auth/register", json={"name": "Lemah", "email": "lemah@test.id", "password": "password"})
+    assert r.status_code == 422
+
+    # javascript: URL rejected on product creation
+    r = client.post(
+        "/api/admin/products",
+        json={"name": "Kopi XSS", "price": "50000", "stock": 5, "image_url": "javascript:alert(1)"},
+        headers=admin_headers,
+    )
+    assert r.status_code == 422
+
+
+def test_owasp_auth_rate_limit(client, monkeypatch):
+    from app.config import get_settings
+    monkeypatch.setattr(get_settings(), "auth_rate_limit_max", 3)
+    for _ in range(3):
+        r = client.post("/api/auth/login", json={"email": "budi@test.id", "password": "salah"})
+        assert r.status_code == 401
+    r = client.post("/api/auth/login", json={"email": "budi@test.id", "password": "salah"})
+    assert r.status_code == 429 and "retry-after" in r.headers

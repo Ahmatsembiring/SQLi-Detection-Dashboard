@@ -2,14 +2,30 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from ..config import get_settings
 from ..db import get_db
 from ..deps import get_current_user
 from ..models import User
 from ..request_context import current_actor
 from ..schemas import LoginIn, RegisterIn, TokenOut, UserOut
-from ..security import create_access_token, hash_password, verify_password
+from ..security import auth_rate_limiter, create_access_token, hash_password, verify_password
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+
+def _enforce_rate_limit(scope: str) -> None:
+    s = get_settings()
+    actor = current_actor.get()
+    ip = actor.ip if actor and actor.ip else "unknown"
+    allowed, retry_after = auth_rate_limiter.check(
+        f"{scope}:{ip}", s.auth_rate_limit_max, s.auth_rate_limit_window_seconds
+    )
+    if not allowed:
+        raise HTTPException(
+            status.HTTP_429_TOO_MANY_REQUESTS,
+            f"Too many {scope} attempts. Please retry in {retry_after} seconds.",
+            headers={"Retry-After": str(retry_after)},
+        )
 
 
 def _token_response(user: User) -> TokenOut:
@@ -22,6 +38,7 @@ def _token_response(user: User) -> TokenOut:
 
 @router.post("/register", response_model=TokenOut, status_code=201)
 def register(body: RegisterIn, db: Session = Depends(get_db)):
+    _enforce_rate_limit("register")
     email = body.email.lower()
     if db.scalar(select(User.id).where(User.email == email)):
         raise HTTPException(status.HTTP_409_CONFLICT, "Email already registered")
@@ -33,6 +50,7 @@ def register(body: RegisterIn, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=TokenOut)
 def login(body: LoginIn, db: Session = Depends(get_db)):
+    _enforce_rate_limit("login")
     # The email is a bound parameter -> safe. It is still written to the DB log, where an
     # injection attempt here is detected and attributed to the client IP (FR-12).
     user = db.scalar(select(User).where(User.email == body.email.strip().lower()))

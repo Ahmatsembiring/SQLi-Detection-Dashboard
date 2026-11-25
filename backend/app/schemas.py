@@ -3,7 +3,9 @@ from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
+
+from .security import validate_password_strength
 
 
 class ORM(BaseModel):
@@ -15,6 +17,11 @@ class RegisterIn(BaseModel):
     name: str = Field(min_length=1, max_length=100)
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
+
+    @field_validator("password")
+    @classmethod
+    def check_password_strength(cls, v: str) -> str:
+        return validate_password_strength(v)
 
 
 class LoginIn(BaseModel):
@@ -51,6 +58,11 @@ class PasswordChange(BaseModel):
     old_password: str
     new_password: str = Field(min_length=8, max_length=128)
 
+    @field_validator("new_password")
+    @classmethod
+    def check_new_password_strength(cls, v: str) -> str:
+        return validate_password_strength(v)
+
 
 # ---- catalog -------------------------------------------------------------------------------
 class CategoryIn(BaseModel):
@@ -72,6 +84,16 @@ class ProductIn(BaseModel):
     category_id: int | None = None
     image_url: str | None = Field(None, max_length=500)
     is_active: bool = True
+
+    @field_validator("image_url")
+    @classmethod
+    def check_safe_image_url(cls, v: str | None) -> str | None:
+        if v is None or v == "":
+            return None
+        cleaned = v.strip()
+        if not (cleaned.startswith("https://") or cleaned.startswith("http://") or cleaned.startswith("/")):
+            raise ValueError("image_url must start with https://, http://, or /")
+        return cleaned
 
 
 class ProductOut(ORM):

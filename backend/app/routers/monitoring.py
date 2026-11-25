@@ -271,6 +271,55 @@ def export_pdf(f: LogFilters = Depends(), db: Session = Depends(get_db)):
                              headers={"Content-Disposition": f'attachment; filename="{name}"'})
 
 
+@router.get("/security-posture")
+def security_posture():
+    """OWASP Top 10 security controls summary for the admin monitoring dashboard."""
+    from ..config import get_settings
+
+    s = get_settings()
+    return {
+        "standard": "OWASP Top 10:2021 / ASVS",
+        "controls": [
+            {
+                "id": "A01",
+                "name": "Broken Access Control",
+                "status": "active",
+                "detail": "RBAC (admin/user), per-resource ownership checks, least-privilege DB roles (shop vs detector).",
+            },
+            {
+                "id": "A02",
+                "name": "Cryptographic Failures",
+                "status": "active",
+                "detail": "Argon2id password hashing + constant-time dummy verification to prevent account enumeration.",
+            },
+            {
+                "id": "A03",
+                "name": "Injection",
+                "status": "active",
+                "detail": "100% SQLAlchemy ORM bound parameters, strict Pydantic schema validation, safe URL & CSV escaping.",
+            },
+            {
+                "id": "A05",
+                "name": "Security Misconfiguration",
+                "status": "active",
+                "detail": "CSP, X-Frame-Options DENY, X-Content-Type-Options nosniff, Referrer/Permissions-Policy, non-root Docker.",
+            },
+            {
+                "id": "A07",
+                "name": "Auth & Session Failures",
+                "status": "active",
+                "detail": f"Auth rate limit ({s.auth_rate_limit_max} req/{s.auth_rate_limit_window_seconds}s), strong password policy, JWT iss/jti/exp.",
+            },
+            {
+                "id": "A09",
+                "name": "Security Logging & Monitoring",
+                "status": "active",
+                "detail": "PostgreSQL jsonlog -> Char N-Gram TF-IDF + Random Forest -> real-time WebSocket alert & actor tagging.",
+            },
+        ],
+    }
+
+
 @router.get("/false-positives.csv")
 def export_false_positives(db: Session = Depends(get_db)):
     """Feedback data for retraining: payloads an admin confirmed as benign (label 0)."""

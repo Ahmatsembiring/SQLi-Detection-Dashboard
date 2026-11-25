@@ -2,15 +2,15 @@
 
 /* Chart + UI tokens (reference data-viz palette). Dark values are stepped, not flipped. */
 :root {
-  --surface-1: #fcfcfb;
-  --page: #f9f9f7;
-  --text-primary: #0b0b0b;
-  --text-secondary: #52514e;
-  --text-muted: #898781;
-  --grid: #e1e0d9;
-  --axis: #c3c2b7;
-  --series-1: #2a78d6;
-  --series-2: #eb6834;
+  --surface-1: #fffdf9;
+  --page: #faf6f0;
+  --text-primary: #1c1410;
+  --text-secondary: #574940;
+  --text-muted: #8c7b70;
+  --grid: #e8dfd5;
+  --axis: #cbbba9;
+  --series-1: #92400e;
+  --series-2: #d97706;
   --critical: #d03b3b;
   --good: #0ca30c;
   --warning: #fab219;

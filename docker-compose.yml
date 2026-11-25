@@ -3,6 +3,9 @@ name: sqli-detection
 services:
   db:
     build: ./db
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       APP_DB_PASSWORD: ${APP_DB_PASSWORD}
@@ -22,6 +25,9 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     environment:
       DATABASE_URL: postgresql+psycopg://shop:${APP_DB_PASSWORD}@db:5432/shop
       JWT_SECRET: ${JWT_SECRET}
@@ -31,6 +37,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
     ports:
       - "127.0.0.1:8000:8000"
 
@@ -38,6 +49,9 @@ services:
     build:
       context: .
       dockerfile: collector/Dockerfile
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     environment:
       DETECTOR_DB_URL: postgresql://detector:${DETECTOR_DB_PASSWORD}@db:5432/shop
       LOG_DIR: /var/log/postgresql
@@ -46,12 +60,16 @@ services:
       - pglogs:/var/log/postgresql:ro
     depends_on:
       backend:
-        condition: service_started
+        condition: service_healthy
 
   frontend:
     build: ./frontend
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     ports:
       - "127.0.0.1:8080:80"
 

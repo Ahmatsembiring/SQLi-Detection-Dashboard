@@ -66,12 +66,17 @@ function actor(e) {
 export default function Dashboard() {
   const [hours, setHours] = useState(24);
   const [stats, setStats] = useState(null);
+  const [posture, setPosture] = useState(null);
   const [feed, setFeed] = useState([]);
   const [onlySqli, setOnlySqli] = useState(true);
   const [flash, setFlash] = useState(new Set());
   const refreshTimer = useRef(null);
 
   const loadStats = useCallback(() => api("/api/monitor/stats", { params: { hours } }).then(setStats).catch(() => {}), [hours]);
+
+  useEffect(() => {
+    api("/api/monitor/security-posture").then(setPosture).catch(() => {});
+  }, []);
 
   useEffect(() => {
     loadStats();
@@ -237,6 +242,29 @@ export default function Dashboard() {
           </div>
         </Card>
       </div>
+
+      {posture && (
+        <Card className="p-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 className="text-sm font-semibold">Postur Keamanan ({posture.standard})</h2>
+              <p className="text-xs text-stone-500">Kontrol keamanan aktif pada KopiAman untuk mitigasi serangan &amp; pemantauan log.</p>
+            </div>
+            <Badge tone="green">✓ {posture.controls.length} Kontrol Aktif</Badge>
+          </div>
+          <div className="mt-3 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+            {posture.controls.map((c) => (
+              <div key={c.id} className="rounded-lg border border-stone-200 bg-stone-50/60 p-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-bold text-amber-900">{c.id} · {c.name}</span>
+                  <Badge tone="green">Aktif</Badge>
+                </div>
+                <p className="mt-1 text-xs leading-relaxed text-stone-600">{c.detail}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
     </div>
   );
 }

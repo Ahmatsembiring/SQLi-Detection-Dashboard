@@ -3,7 +3,7 @@ import { useAuth } from "../auth";
 import { useCart } from "../cart";
 
 const navCls = ({ isActive }) =>
-  `rounded-lg px-3 py-2 text-sm font-medium ${isActive ? "bg-blue-50 text-blue-700" : "text-slate-600 hover:bg-slate-100"}`;
+  `rounded-lg px-3 py-2 text-sm font-medium ${isActive ? "bg-amber-100/80 text-amber-900" : "text-stone-600 hover:bg-stone-100"}`;
 
 export default function Layout() {
   const { user, logout } = useAuth();
@@ -12,28 +12,31 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-stone-200 bg-[#fffdf9]/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-3">
-          <Link to="/" className="flex items-center gap-2 text-lg font-bold text-slate-900">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">T</span>
-            TokoAman
+          <Link to="/" className="flex items-center gap-2.5 text-lg font-bold text-stone-900">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#4a2c1a] text-sm font-bold text-amber-100">K</span>
+            <span className="flex flex-col leading-tight">
+              <span>KopiAman</span>
+              <span className="text-[10px] font-medium tracking-wider text-amber-800 uppercase">Roastery &amp; Coffee Shop</span>
+            </span>
           </Link>
           <nav className="flex flex-wrap items-center gap-1">
-            <NavLink to="/" end className={navCls}>Belanja</NavLink>
+            <NavLink to="/" end className={navCls}>Menu Kopi</NavLink>
             {user?.role === "user" && (
               <>
                 <NavLink to="/cart" className={navCls}>
-                  Keranjang{count > 0 && <span className="ml-1 rounded-full bg-blue-600 px-1.5 text-xs text-white tabular">{count}</span>}
+                  Keranjang{count > 0 && <span className="ml-1 rounded-full bg-amber-800 px-1.5 text-xs text-amber-50 tabular">{count}</span>}
                 </NavLink>
                 <NavLink to="/orders" className={navCls}>Pesanan</NavLink>
               </>
             )}
-            {user?.role === "admin" && <NavLink to="/admin" className={navCls}>Dashboard Admin</NavLink>}
+            {user?.role === "admin" && <NavLink to="/admin" className={navCls}>Dashboard Keamanan</NavLink>}
             {user ? (
               <>
                 <NavLink to="/profile" className={navCls}>{user.name.split(" ")[0]}</NavLink>
                 <button
-                  className="rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-100"
+                  className="rounded-lg px-3 py-2 text-sm text-stone-600 hover:bg-stone-100"
                   onClick={async () => {
                     await logout();
                     navigate("/");
@@ -45,7 +48,7 @@ export default function Layout() {
             ) : (
               <>
                 <NavLink to="/login" className={navCls}>Masuk</NavLink>
-                <NavLink to="/register" className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700">
+                <NavLink to="/register" className="rounded-lg bg-amber-800 px-3 py-2 text-sm font-medium text-amber-50 hover:bg-amber-900">
                   Daftar
                 </NavLink>
               </>
@@ -56,8 +59,8 @@ export default function Layout() {
       <main className="mx-auto max-w-6xl px-4 py-6">
         <Outlet />
       </main>
-      <footer className="border-t border-slate-200 py-6 text-center text-xs text-slate-500">
-        TokoAman · prototipe tugas akhir — aktivitas database dipantau untuk deteksi SQL Injection
+      <footer className="border-t border-stone-200 py-6 text-center text-xs text-stone-500">
+        KopiAman Roastery · OWASP-Hardened Coffee Shop — aktivitas database dipantau real-time untuk deteksi SQL Injection
       </footer>
     </div>
   );

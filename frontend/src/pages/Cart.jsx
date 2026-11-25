@@ -30,19 +30,19 @@ export default function Cart() {
   };
 
   if (items.length === 0) {
-    return <Empty>Keranjang kosong. <Link to="/" className="text-blue-600 hover:underline">Mulai belanja</Link></Empty>;
+    return <Empty>Keranjang masih kosong. <Link to="/" className="text-amber-800 hover:underline">Lihat menu kopi</Link></Empty>;
   }
 
   return (
     <div className="grid gap-6 lg:grid-cols-3">
       <div className="space-y-3 lg:col-span-2">
-        <h1 className="text-xl font-bold">Keranjang</h1>
+        <h1 className="text-xl font-bold">Keranjang Kopi</h1>
         {items.map((it) => (
           <Card key={it.id} className="flex items-center gap-3 p-3">
             <ProductImage product={it.product} className="h-16 w-16 shrink-0 rounded-lg text-base" />
             <div className="min-w-0 flex-1">
-              <Link to={`/products/${it.product.id}`} className="block truncate font-medium hover:text-blue-700">{it.product.name}</Link>
-              <div className="text-sm text-slate-600">{rupiah(it.product.price)}</div>
+              <Link to={`/products/${it.product.id}`} className="block truncate font-medium hover:text-amber-800">{it.product.name}</Link>
+              <div className="text-sm text-stone-600">{rupiah(it.product.price)}</div>
             </div>
             <div className="flex items-center gap-1">
               <Button size="sm" variant="secondary" aria-label="Kurangi" disabled={it.quantity <= 1} onClick={() => update(it.id, it.quantity - 1)}>−</Button>
@@ -59,7 +59,8 @@ export default function Cart() {
         <form onSubmit={checkout} className="space-y-3">
           <Textarea label="Alamat pengiriman" rows={3} required minLength={5} maxLength={500} value={address}
             onChange={(e) => setAddress(e.target.value)} placeholder="Jl. …, kota, kode pos" />
-          <Textarea label="Catatan (opsional)" rows={2} maxLength={500} value={note} onChange={(e) => setNote(e.target.value)} />
+          <Textarea label="Catatan gilingan / pengiriman (opsional)" rows={2} maxLength={500} value={note}
+            onChange={(e) => setNote(e.target.value)} placeholder="Mis. Whole bean / giling medium untuk V60" />
           {error && <Alert>{error}</Alert>}
           <Button type="submit" className="w-full" disabled={busy}>{busy ? "Memproses…" : "Buat pesanan"}</Button>
         </form>
