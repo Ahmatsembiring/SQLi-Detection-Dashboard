@@ -12,3 +12,10 @@ ml/reports/*.log
 build/
 lab/output/*
 !lab/output/.gitkeep
+.kilo/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.db
+*.sqlite3
