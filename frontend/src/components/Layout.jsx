@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../auth";
 import { useCart } from "../cart";
 
@@ -35,14 +35,16 @@ function UserAvatar({ user, size = "h-6 w-6 text-[11px]" }) {
 export default function Layout() {
   const { user } = useAuth();
   const { count } = useCart();
+  const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const close = () => setMenuOpen(false);
+  const isFullBleed = pathname === "/" || pathname === "/login" || pathname === "/register";
 
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 border-b border-amber-200/15 bg-[#22140c]/95 text-amber-50 shadow-[0_6px_24px_rgba(24,12,6,0.2)] backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3">
+        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8">
           <Link to="/" onClick={close} className="flex items-center gap-2.5 text-lg font-bold text-amber-50">
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-amber-300/30 bg-gradient-to-br from-amber-700 to-amber-900 text-sm font-bold text-amber-50 shadow-inner">K</span>
             <span className="flex flex-col leading-tight">
@@ -150,7 +152,13 @@ export default function Layout() {
           </nav>
         )}
       </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-5 sm:py-7">
+      <main
+        className={
+          isFullBleed
+            ? "flex w-full flex-1 flex-col"
+            : "mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6 sm:py-7 lg:px-8"
+        }
+      >
         <Outlet />
       </main>
       <footer className="border-t border-amber-200/15 bg-[#1c1009] px-4 py-6 text-center text-xs text-amber-100/70">

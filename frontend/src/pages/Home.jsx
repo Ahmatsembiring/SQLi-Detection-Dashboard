@@ -49,30 +49,30 @@ export default function Home() {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="w-full">
       <section
-        className="relative overflow-hidden rounded-3xl border border-amber-200/20 bg-[#23140c] p-6 text-amber-50 shadow-[0_16px_42px_rgba(35,20,12,0.22)] md:p-10"
+        className="relative w-full overflow-hidden border-b border-amber-200/15 bg-[#23140c] text-amber-50 shadow-[0_12px_36px_rgba(35,20,12,0.20)]"
         style={{
           backgroundImage:
-            "linear-gradient(110deg, rgba(28, 15, 8, 0.92) 0%, rgba(56, 30, 15, 0.84) 55%, rgba(30, 16, 8, 0.72) 100%), url('/images/coffee/espresso-blend.jpg')",
+            "linear-gradient(110deg, rgba(28, 15, 8, 0.90) 0%, rgba(56, 30, 15, 0.80) 55%, rgba(30, 16, 8, 0.68) 100%), url('/images/coffee/espresso-blend.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="relative z-10">
+        <div className="relative z-10 mx-auto max-w-[1440px] px-4 py-10 sm:px-6 md:py-14 lg:px-8">
           <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-amber-200">
             <span className="rounded-full border border-amber-200/25 bg-black/25 px-3 py-0.5 backdrop-blur-sm">Fresh Roast Mingguan</span>
             <span className="rounded-full border border-amber-200/25 bg-black/25 px-3 py-0.5 backdrop-blur-sm">100% Biji Nusantara</span>
             <span className="rounded-full border border-emerald-300/30 bg-emerald-500/20 px-3 py-0.5 text-emerald-100 backdrop-blur-sm">OWASP-Hardened</span>
           </div>
-          <h1 className="font-display mt-3.5 text-2xl font-bold tracking-tight text-amber-50 md:text-4xl">
+          <h1 className="font-display mt-3.5 max-w-3xl text-2xl font-bold tracking-tight text-amber-50 sm:text-3xl md:text-4xl">
             Kopi Spesialti Nusantara, Diseduh dengan Elegan &amp; Aman
           </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-amber-100/90">
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-amber-100/90 md:text-base">
             Jelajahi single origin Arabika, fine Robusta Lampung, house blend espresso, cold brew, hingga alat seduh manual langsung dari roastery kami — tanpa perlu login untuk melihat katalog.
           </p>
           <form
-            className="mt-5 flex max-w-2xl gap-2"
+            className="mt-6 flex max-w-2xl gap-2"
             onSubmit={(e) => {
               e.preventDefault();
               update({ q: query.trim() });
@@ -91,6 +91,8 @@ export default function Home() {
           </form>
         </div>
       </section>
+
+      <div className="mx-auto w-full max-w-[1440px] space-y-5 px-4 py-6 sm:px-6 lg:px-8">
 
       <section className="grid gap-3 sm:grid-cols-3">
         <Card className="p-3.5">
@@ -194,6 +196,7 @@ export default function Home() {
           <Pagination page={page} size={data.size} total={data.total} onPage={(n) => update({ page: String(n) })} />
         </>
       )}
+      </div>
     </div>
   );
 }

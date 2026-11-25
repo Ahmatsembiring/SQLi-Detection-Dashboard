@@ -28,15 +28,15 @@ export default function Register() {
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
   return (
     <section
-      className="relative -mx-4 -my-5 flex min-h-[calc(100vh-140px)] items-center justify-center overflow-hidden px-4 py-10 sm:-my-7 sm:rounded-3xl sm:mx-0"
+      className="relative flex w-full flex-1 items-center justify-center overflow-hidden px-4 py-12 sm:px-6 lg:px-10"
       style={{
         backgroundImage:
-          "linear-gradient(120deg, rgba(24, 13, 7, 0.72) 0%, rgba(44, 24, 12, 0.56) 50%, rgba(24, 13, 7, 0.78) 100%), url('/images/coffee/plantation-bg.jpg')",
+          "linear-gradient(120deg, rgba(24, 13, 7, 0.70) 0%, rgba(44, 24, 12, 0.52) 50%, rgba(24, 13, 7, 0.76) 100%), url('/images/coffee/plantation-bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="relative z-10 grid w-full max-w-4xl items-center gap-8 lg:grid-cols-12">
+      <div className="relative z-10 grid w-full max-w-5xl items-center gap-10 lg:grid-cols-12">
         <div className="hidden space-y-4 text-amber-50 lg:col-span-6 lg:block">
           <span className="inline-block rounded-full border border-amber-200/30 bg-black/30 px-3.5 py-1 text-xs font-medium tracking-wide text-amber-200 backdrop-blur-sm">
             Bergabung dengan Komunitas KopiAman
