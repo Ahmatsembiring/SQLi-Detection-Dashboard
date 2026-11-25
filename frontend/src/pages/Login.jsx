@@ -28,7 +28,7 @@ export default function Login() {
   };
 
   return (
-    <Card className="mx-auto mt-6 max-w-sm p-6">
+    <Card className="mx-auto mt-3 w-full max-w-sm p-5 sm:mt-6 sm:p-6">
       <h1 className="mb-4 text-xl font-bold">Masuk</h1>
       <form onSubmit={submit} className="space-y-3">
         {/* type="text" (not "email") on purpose: the field is a monitored free-text input point. */}

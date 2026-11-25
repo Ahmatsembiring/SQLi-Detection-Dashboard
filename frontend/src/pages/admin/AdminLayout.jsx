@@ -17,11 +17,20 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen md:flex">
       <aside className="border-b border-slate-200 bg-white md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:border-r md:border-b-0">
-        <div className="flex items-center justify-between px-4 py-4 md:block">
+        <div className="flex items-center justify-between px-4 py-3.5 md:block md:py-4">
           <Link to="/" className="flex items-center gap-2 font-bold text-stone-900">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#4a2c1a] text-amber-100">K</span>
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#4a2c1a] text-amber-100">K</span>
             KopiAman <span className="text-xs font-normal text-stone-500">Admin</span>
           </Link>
+          <button
+            className="rounded-lg border border-stone-200 px-2.5 py-1 text-xs font-medium text-stone-700 hover:bg-stone-50 md:hidden"
+            onClick={async () => {
+              await logout();
+              navigate("/");
+            }}
+          >
+            Keluar
+          </button>
         </div>
         <nav className="flex gap-1 overflow-x-auto px-2 pb-2 md:flex-col md:pb-0">
           {links.map(([to, label, end]) => (

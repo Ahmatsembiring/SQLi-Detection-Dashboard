@@ -57,10 +57,12 @@ export default function GoogleAuthButton({ mode = "signup", onSuccess, onError }
             }
           },
         });
+        const containerWidth = btnRef.current.parentElement?.clientWidth || 300;
+        const btnWidth = Math.max(220, Math.min(340, containerWidth));
         window.google.accounts.id.renderButton(btnRef.current, {
           theme: "outline",
           size: "large",
-          width: 320,
+          width: btnWidth,
           text: mode === "signup" ? "signup_with" : "signin_with",
           shape: "rectangular",
           locale: "id",

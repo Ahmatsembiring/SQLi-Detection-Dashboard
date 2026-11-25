@@ -38,18 +38,20 @@ export default function Cart() {
       <div className="space-y-3 lg:col-span-2">
         <h1 className="text-xl font-bold">Keranjang Kopi</h1>
         {items.map((it) => (
-          <Card key={it.id} className="flex items-center gap-3 p-3">
-            <ProductImage product={it.product} className="h-16 w-16 shrink-0 rounded-lg text-base" />
+          <Card key={it.id} className="flex flex-wrap items-center gap-3 p-3 sm:flex-nowrap">
+            <ProductImage product={it.product} className="h-14 w-14 shrink-0 rounded-lg text-base sm:h-16 sm:w-16" />
             <div className="min-w-0 flex-1">
               <Link to={`/products/${it.product.id}`} className="block truncate font-medium hover:text-amber-800">{it.product.name}</Link>
               <div className="text-sm text-stone-600">{rupiah(it.product.price)}</div>
             </div>
-            <div className="flex items-center gap-1">
-              <Button size="sm" variant="secondary" aria-label="Kurangi" disabled={it.quantity <= 1} onClick={() => update(it.id, it.quantity - 1)}>−</Button>
-              <span className="w-8 text-center tabular">{it.quantity}</span>
-              <Button size="sm" variant="secondary" aria-label="Tambah" disabled={it.quantity >= it.product.stock} onClick={() => update(it.id, it.quantity + 1)}>+</Button>
+            <div className="flex w-full items-center justify-between gap-2 border-t border-stone-100 pt-2 sm:w-auto sm:justify-end sm:border-t-0 sm:pt-0">
+              <div className="flex items-center gap-1">
+                <Button size="sm" variant="secondary" aria-label="Kurangi" disabled={it.quantity <= 1} onClick={() => update(it.id, it.quantity - 1)}>−</Button>
+                <span className="w-8 text-center tabular">{it.quantity}</span>
+                <Button size="sm" variant="secondary" aria-label="Tambah" disabled={it.quantity >= it.product.stock} onClick={() => update(it.id, it.quantity + 1)}>+</Button>
+              </div>
+              <Button size="sm" variant="ghost" onClick={() => remove(it.id)}>Hapus</Button>
             </div>
-            <Button size="sm" variant="ghost" onClick={() => remove(it.id)}>Hapus</Button>
           </Card>
         ))}
       </div>

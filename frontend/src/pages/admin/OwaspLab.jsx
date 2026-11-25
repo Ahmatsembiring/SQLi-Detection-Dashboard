@@ -326,13 +326,13 @@ export default function OwaspLab() {
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2 border-b border-stone-200 pb-3">
+      <div className="flex flex-nowrap gap-2 overflow-x-auto border-b border-stone-200 pb-3 sm:flex-wrap sm:overflow-visible">
         {TABS.map((t) => (
           <button
             key={t.id}
             type="button"
             onClick={() => setTab(t.id)}
-            className={`rounded-lg px-3.5 py-2 text-xs font-semibold transition ${
+            className={`shrink-0 whitespace-nowrap rounded-lg px-3.5 py-2 text-xs font-semibold transition ${
               tab === t.id ? "bg-amber-800 text-amber-50" : "border border-stone-200 bg-white text-stone-700 hover:bg-stone-50"
             }`}
           >

@@ -27,7 +27,7 @@ export default function Register() {
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
   return (
-    <Card className="mx-auto mt-6 max-w-sm p-6">
+    <Card className="mx-auto mt-3 w-full max-w-sm p-5 sm:mt-6 sm:p-6">
       <h1 className="mb-4 text-xl font-bold">Daftar akun</h1>
       <form onSubmit={submit} className="space-y-3">
         <Input label="Nama lengkap" name="name" required maxLength={100} value={form.name} onChange={set("name")} />

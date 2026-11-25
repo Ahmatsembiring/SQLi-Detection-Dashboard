@@ -94,11 +94,11 @@ export default function Home() {
       </section>
 
       {categories.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="-mx-1 flex flex-nowrap gap-2 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible">
           <button
             type="button"
             onClick={() => update({ category: "" })}
-            className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition ${
+            className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition ${
               !categoryId ? "bg-amber-800 text-amber-50" : "border border-stone-200 bg-white text-stone-700 hover:bg-stone-50"
             }`}
           >
@@ -109,7 +109,7 @@ export default function Home() {
               key={c.id}
               type="button"
               onClick={() => update({ category: String(c.id) })}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition ${
+              className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition ${
                 String(categoryId) === String(c.id)
                   ? "bg-amber-800 text-amber-50"
                   : "border border-stone-200 bg-white text-stone-700 hover:bg-stone-50"
@@ -121,15 +121,15 @@ export default function Home() {
         </div>
       )}
 
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div className="flex flex-wrap items-end gap-3">
-          <div className="w-56">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+        <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-end">
+          <div className="w-full sm:w-56">
             <Select label="Kategori" value={categoryId} onChange={(e) => update({ category: e.target.value })}>
               <option value="">Semua kategori</option>
               {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </Select>
           </div>
-          <div className="w-48">
+          <div className="w-full sm:w-48">
             <Select label="Urutkan" value={sort} onChange={(e) => update({ sort: e.target.value })}>
               <option value="newest">Terbaru</option>
               <option value="price_asc">Harga terendah</option>
