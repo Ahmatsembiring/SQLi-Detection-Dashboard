@@ -43,6 +43,8 @@ class UserOut(ORM):
     status: str
     phone: str | None = None
     address: str | None = None
+    avatar_url: str | None = None
+    bio: str | None = None
     created_at: datetime | None = None
 
 
@@ -56,6 +58,23 @@ class ProfileUpdate(BaseModel):
     name: str | None = Field(None, min_length=1, max_length=100)
     phone: str | None = Field(None, max_length=30)
     address: str | None = Field(None, max_length=500)
+    bio: str | None = Field(None, max_length=300)
+    avatar_url: str | None = Field(None, max_length=350000)
+
+    @field_validator("avatar_url")
+    @classmethod
+    def check_safe_avatar(cls, v: str | None) -> str | None:
+        if v is None or v == "":
+            return None
+        cleaned = v.strip()
+        if cleaned.startswith(("https://", "http://")):
+            if len(cleaned) > 1000:
+                raise ValueError("Avatar URL is too long")
+            return cleaned
+        # Allow safe raster data URIs only (never SVG, which can embed JS/XSS).
+        if cleaned.startswith(("data:image/jpeg;base64,", "data:image/png;base64,", "data:image/webp;base64,")):
+            return cleaned
+        raise ValueError("avatar_url must be an https:// URL or a JPEG/PNG/WebP image")
 
 
 class PasswordChange(BaseModel):

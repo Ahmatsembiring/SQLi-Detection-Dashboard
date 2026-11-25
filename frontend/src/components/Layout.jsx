@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../auth";
 import { useCart } from "../cart";
 
@@ -9,10 +9,28 @@ const navCls = ({ isActive }) =>
 const mobileNavCls = ({ isActive }) =>
   `block rounded-lg px-3 py-2.5 text-sm font-medium transition ${isActive ? "bg-amber-100/80 text-amber-900" : "text-stone-700 hover:bg-stone-100"}`;
 
+function UserAvatar({ user, size = "h-6 w-6 text-[11px]" }) {
+  const initials = (user?.name || "K")
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0] || "")
+    .join("")
+    .toUpperCase();
+  return (
+    <span className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#4a2c1a] font-bold text-amber-100 ${size}`}>
+      {user?.avatar_url ? (
+        <img src={user.avatar_url} alt={user.name} className="h-full w-full object-cover" referrerPolicy="no-referrer" />
+      ) : (
+        initials
+      )}
+    </span>
+  );
+}
+
 export default function Layout() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { count } = useCart();
-  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const close = () => setMenuOpen(false);
@@ -29,7 +47,7 @@ export default function Layout() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation — Profile & Logout unified inside /profile */}
           <nav className="hidden items-center gap-1 md:flex">
             <NavLink to="/" end className={navCls}>Menu Kopi</NavLink>
             {user?.role === "user" && (
@@ -42,18 +60,19 @@ export default function Layout() {
             )}
             {user?.role === "admin" && <NavLink to="/admin" className={navCls}>Dashboard Keamanan</NavLink>}
             {user ? (
-              <>
-                <NavLink to="/profile" className={navCls}>{user.name.split(" ")[0]}</NavLink>
-                <button
-                  className="rounded-lg px-3 py-2 text-sm text-stone-600 hover:bg-stone-100"
-                  onClick={async () => {
-                    await logout();
-                    navigate("/");
-                  }}
-                >
-                  Keluar
-                </button>
-              </>
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  `ml-1 inline-flex items-center gap-2 rounded-full border px-2.5 py-1.5 text-sm font-medium transition ${
+                    isActive
+                      ? "border-amber-300 bg-amber-100/80 text-amber-950"
+                      : "border-stone-200 bg-white text-stone-700 hover:bg-stone-50"
+                  }`
+                }
+              >
+                <UserAvatar user={user} />
+                <span>{user.name.split(" ")[0]}</span>
+              </NavLink>
             ) : (
               <>
                 <NavLink to="/login" className={navCls}>Masuk</NavLink>
@@ -71,7 +90,11 @@ export default function Layout() {
                 Keranjang{count > 0 && <span className="ml-1 rounded-full bg-amber-800 px-1.5 text-[11px] text-amber-50 tabular">{count}</span>}
               </Link>
             )}
-            {!user && (
+            {user ? (
+              <Link to="/profile" onClick={close} aria-label="Profil" className="rounded-full border border-stone-200 p-0.5">
+                <UserAvatar user={user} size="h-7 w-7 text-xs" />
+              </Link>
+            ) : (
               <Link to="/login" onClick={close} className="rounded-lg bg-amber-800 px-3 py-1.5 text-xs font-medium text-amber-50">
                 Masuk
               </Link>
@@ -105,19 +128,12 @@ export default function Layout() {
                 <NavLink to="/admin" onClick={close} className={mobileNavCls}>Dashboard Keamanan</NavLink>
               )}
               {user ? (
-                <>
-                  <NavLink to="/profile" onClick={close} className={mobileNavCls}>Profil ({user.name.split(" ")[0]})</NavLink>
-                  <button
-                    className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-red-700 hover:bg-red-50"
-                    onClick={async () => {
-                      close();
-                      await logout();
-                      navigate("/");
-                    }}
-                  >
-                    Keluar
-                  </button>
-                </>
+                <NavLink to="/profile" onClick={close} className={mobileNavCls}>
+                  <span className="inline-flex items-center gap-2">
+                    <UserAvatar user={user} size="h-5 w-5 text-[10px]" />
+                    Profil &amp; Akun ({user.name.split(" ")[0]})
+                  </span>
+                </NavLink>
               ) : (
                 <>
                   <NavLink to="/login" onClick={close} className={mobileNavCls}>Masuk</NavLink>

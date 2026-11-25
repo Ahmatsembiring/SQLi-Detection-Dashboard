@@ -21,6 +21,8 @@ class User(Base):
     status: Mapped[str] = mapped_column(String(12), default="active")  # 'active' | 'suspended'
     phone: Mapped[str | None] = mapped_column(String(30))
     address: Mapped[str | None] = mapped_column(Text)
+    avatar_url: Mapped[str | None] = mapped_column(Text)
+    bio: Mapped[str | None] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     __table_args__ = (

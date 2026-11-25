@@ -89,6 +89,18 @@ def test_review_and_profile(client, user_headers):
     assert client.get("/api/products/1").json()["review_count"] == 1
     r = client.patch("/api/profile", json={"address": "Jl. Pagar Alam 5"}, headers=user_headers)
     assert r.json()["address"] == "Jl. Pagar Alam 5"
+    r2 = client.patch(
+        "/api/profile",
+        json={"bio": "Pecinta V60 Aceh Gayo", "avatar_url": "data:image/png;base64,iVBORw0KGgo="},
+        headers=user_headers,
+    )
+    assert r2.status_code == 200 and r2.json()["bio"] == "Pecinta V60 Aceh Gayo"
+    # SVG data URI must be rejected (XSS prevention)
+    assert client.patch(
+        "/api/profile",
+        json={"avatar_url": "data:image/svg+xml;base64,PHN2Zz48L3N2Zz4="},
+        headers=user_headers,
+    ).status_code == 422
 
 
 def test_admin_suspend_blocks_user(client, admin_headers, user_headers):

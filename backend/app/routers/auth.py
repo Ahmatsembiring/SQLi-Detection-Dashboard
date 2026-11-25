@@ -91,6 +91,8 @@ def google_auth(body: GoogleAuthIn, db: Session = Depends(get_db)):
 
     email = info["email"].strip().lower()
     name = (info.get("name") or email.split("@")[0]).strip()[:100]
+    picture = info.get("picture")
+    safe_picture = picture if isinstance(picture, str) and picture.startswith("https://") else None
     user = db.scalar(select(User).where(User.email == email))
     if user is None:
         # Auto-register new Gmail user with a random unguessable Argon2id password hash.
@@ -99,11 +101,16 @@ def google_auth(body: GoogleAuthIn, db: Session = Depends(get_db)):
             email=email,
             password_hash=hash_password(secrets.token_urlsafe(32)),
             role="user",
+            avatar_url=safe_picture,
         )
         db.add(user)
         db.commit()
-    elif user.status != "active":
-        raise HTTPException(status.HTTP_403_FORBIDDEN, "Account suspended")
+    else:
+        if user.status != "active":
+            raise HTTPException(status.HTTP_403_FORBIDDEN, "Account suspended")
+        if not user.avatar_url and safe_picture:
+            user.avatar_url = safe_picture
+            db.commit()
     return _token_response(user)
 
 
