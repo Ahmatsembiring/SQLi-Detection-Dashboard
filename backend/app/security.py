@@ -61,6 +61,19 @@ def decode_token(token: str) -> dict:
     return jwt.decode(token, s.jwt_secret, algorithms=[s.jwt_algorithm], issuer=s.jwt_issuer)
 
 
+def verify_google_id_token(credential: str, client_id: str) -> dict:
+    """Verify a Google Identity Services ID token (signature, aud, iss, exp, email_verified)."""
+    from google.auth.transport import requests as google_requests
+    from google.oauth2 import id_token
+
+    info = id_token.verify_oauth2_token(credential, google_requests.Request(), client_id)
+    if info.get("iss") not in ("accounts.google.com", "https://accounts.google.com"):
+        raise ValueError("Invalid Google token issuer")
+    if not info.get("email") or not info.get("email_verified"):
+        raise ValueError("Google account email is not verified")
+    return info
+
+
 class SlidingWindowRateLimiter:
     """OWASP A07: lightweight per-IP sliding-window rate limiter for auth endpoints."""
 

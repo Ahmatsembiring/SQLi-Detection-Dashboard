@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     auth_rate_limit_window_seconds: int = 60
     # OWASP A05: allow toggling OpenAPI docs via environment variable.
     enable_docs: bool = True
+    # Google Identity Services (OAuth2 / OIDC) Client ID for "Sign in / Register with Google".
+    google_client_id: str = ""
 
 
 @lru_cache

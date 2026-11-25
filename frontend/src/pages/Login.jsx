@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 import { Alert, Button, Card, Input } from "../components/ui";
 
 export default function Login() {
@@ -38,6 +39,13 @@ export default function Login() {
         {error && <Alert>{error}</Alert>}
         <Button type="submit" className="w-full" disabled={busy}>{busy ? "Memproses…" : "Masuk"}</Button>
       </form>
+      <div className="mt-3">
+        <GoogleAuthButton
+          mode="signin"
+          onSuccess={(user) => navigate(location.state?.from || (user.role === "admin" ? "/admin" : "/"), { replace: true })}
+          onError={setError}
+        />
+      </div>
       <p className="mt-4 text-center text-sm text-stone-600">
         Belum punya akun? <Link to="/register" className="text-amber-800 hover:underline">Daftar</Link>
       </p>

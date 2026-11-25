@@ -158,3 +158,38 @@ def test_owasp_lab_endpoints(client, admin_headers, user_headers):
 
     rst = client.post("/api/monitor/lab/reset-rate-limit", headers=admin_headers)
     assert rst.status_code == 200 and rst.json()["status"] == "reset"
+
+
+def test_google_auth_register_and_login(client, monkeypatch):
+    from app.config import get_settings
+    from app.routers import auth as auth_router
+
+    # Disabled when GOOGLE_CLIENT_ID is empty
+    monkeypatch.setattr(get_settings(), "google_client_id", "")
+    assert client.get("/api/auth/providers").json() == {"google_enabled": False, "google_client_id": None}
+    assert client.post("/api/auth/google", json={"credential": "x" * 40}).status_code == 503
+
+    # Enabled with mocked Google token verification
+    monkeypatch.setattr(get_settings(), "google_client_id", "test-google-client-id.apps.googleusercontent.com")
+    assert client.get("/api/auth/providers").json()["google_enabled"] is True
+
+    monkeypatch.setattr(
+        auth_router,
+        "verify_google_id_token",
+        lambda cred, cid: {"email": "kopi.lover@gmail.com", "name": "Kopi Lover", "email_verified": True},
+    )
+    r1 = client.post("/api/auth/google", json={"credential": "valid-google-id-token-payload"})
+    assert r1.status_code == 200
+    assert r1.json()["user"]["email"] == "kopi.lover@gmail.com"
+    assert r1.json()["user"]["role"] == "user"
+
+    # Second call logs into the same account without duplicating
+    r2 = client.post("/api/auth/google", json={"credential": "valid-google-id-token-payload"})
+    assert r2.status_code == 200 and r2.json()["user"]["id"] == r1.json()["user"]["id"]
+
+    # Invalid token rejected
+    def _fail(*_):
+        raise ValueError("bad token")
+
+    monkeypatch.setattr(auth_router, "verify_google_id_token", _fail)
+    assert client.post("/api/auth/google", json={"credential": "bad-google-id-token-payload"}).status_code == 401
