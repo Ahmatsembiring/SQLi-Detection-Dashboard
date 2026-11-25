@@ -18,7 +18,7 @@ from ..deps import require_admin
 from ..models import AttackLog, User
 from ..realtime import manager
 from ..schemas import AttackLogOut, AttackLogPage, FalsePositiveIn
-from ..security import decode_token
+from ..security import auth_rate_limiter, decode_token
 
 router = APIRouter(prefix="/api/monitor", tags=["monitoring"], dependencies=[Depends(require_admin)])
 ws_router = APIRouter()
@@ -317,6 +317,77 @@ def security_posture():
                 "detail": "PostgreSQL jsonlog -> Char N-Gram TF-IDF + Random Forest -> real-time WebSocket alert & actor tagging.",
             },
         ],
+    }
+
+
+@router.post("/lab/reset-rate-limit")
+def reset_lab_rate_limit():
+    """Admin-only helper for the interactive OWASP A07 Lab so admins can reset the
+    in-memory auth rate limiter immediately after demonstrating a 429 lockout."""
+    auth_rate_limiter.reset()
+    return {"status": "reset"}
+
+
+@router.get("/lab/scenarios")
+def lab_scenarios():
+    """Curated OWASP Top 10 test scenarios for the interactive admin security lab."""
+    return {
+        "sqli_presets": [
+            {
+                "id": "sqli-union",
+                "name": "UNION-Based Extraction",
+                "endpoint": "/api/products",
+                "method": "GET",
+                "payload": "gayo' UNION SELECT id, email, password_hash FROM users--",
+                "description": "Mencoba menggabungkan hasil tabel users ke hasil pencarian katalog kopi.",
+                "defense": "ORM bound parameter memperlakukan payload sebagai teks biasa; hasil pencarian 0, model ML mendeteksi SQLi.",
+            },
+            {
+                "id": "sqli-boolean",
+                "name": "Boolean-Based Blind",
+                "endpoint": "/api/products",
+                "method": "GET",
+                "payload": "arabika' OR '1'='1' --",
+                "description": "Mencoba memaksa kondisi WHERE selalu bernilai TRUE untuk membocorkan seluruh data.",
+                "defense": "Parameter terikat (parameterized query) mencegah perubahan struktur logika SQL.",
+            },
+            {
+                "id": "sqli-time",
+                "name": "Time-Based Blind (pg_sleep)",
+                "endpoint": "/api/products",
+                "method": "GET",
+                "payload": "robusta'; SELECT pg_sleep(5)--",
+                "description": "Mencoba menyisipkan stacked query pg_sleep() untuk mendeteksi celah lewat jeda waktu.",
+                "defense": "Bound parameter & driver psycopg mencegah stacked query; respons tetap cepat (<50 ms).",
+            },
+            {
+                "id": "sqli-error",
+                "name": "Error-Based SQLi",
+                "endpoint": "/api/products",
+                "method": "GET",
+                "payload": "kopi' AND 1=CAST((SELECT version()) AS INT)--",
+                "description": "Memancing error konversi tipe data agar versi PostgreSQL bocor di pesan error.",
+                "defense": "Query tidak dieksekusi sebagai ekspresi SQL; tidak ada error database yang bocor.",
+            },
+            {
+                "id": "sqli-auth-bypass",
+                "name": "Authentication Bypass (Login)",
+                "endpoint": "/api/auth/login",
+                "method": "POST",
+                "payload": "admin@kopiaman.id' OR 1=1--",
+                "description": "Mencoba login sebagai admin tanpa mengetahui password melalui kolom email.",
+                "defense": "Login gagal (401) dengan verifikasi Argon2id timing-safe; percobaan tercatat beserta IP pelaku.",
+            },
+            {
+                "id": "xss-stored",
+                "name": "Reflected / Stored XSS Probe",
+                "endpoint": "/api/products",
+                "method": "GET",
+                "payload": "<script>alert('XSS-KopiAman')</script>",
+                "description": "Mencoba menyuntikkan tag script JavaScript ke parameter pencarian.",
+                "defense": "React auto-escaping + Content-Security-Policy (script-src 'self') memblokir eksekusi skrip.",
+            },
+        ]
     }
 
 

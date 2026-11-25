@@ -145,3 +145,16 @@ def test_owasp_auth_rate_limit(client, monkeypatch):
         assert r.status_code == 401
     r = client.post("/api/auth/login", json={"email": "budi@test.id", "password": "salah"})
     assert r.status_code == 429 and "retry-after" in r.headers
+
+
+def test_owasp_lab_endpoints(client, admin_headers, user_headers):
+    # Only admins can access OWASP lab endpoints
+    assert client.get("/api/monitor/lab/scenarios", headers=user_headers).status_code == 403
+    assert client.post("/api/monitor/lab/reset-rate-limit", headers=user_headers).status_code == 403
+
+    s = client.get("/api/monitor/lab/scenarios", headers=admin_headers)
+    assert s.status_code == 200
+    assert len(s.json()["sqli_presets"]) >= 5
+
+    rst = client.post("/api/monitor/lab/reset-rate-limit", headers=admin_headers)
+    assert rst.status_code == 200 and rst.json()["status"] == "reset"

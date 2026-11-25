@@ -3,6 +3,7 @@ import { useAuth } from "../../auth";
 
 const links = [
   ["/admin", "Dashboard", true],
+  ["/admin/owasp-lab", "Lab OWASP"],
   ["/admin/logs", "Log deteksi"],
   ["/admin/users", "Pengguna & risiko"],
   ["/admin/orders", "Pesanan"],

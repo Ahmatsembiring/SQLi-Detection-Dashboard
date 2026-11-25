@@ -7,6 +7,7 @@ import AdminCategories from "./pages/admin/Categories";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminLogs from "./pages/admin/Logs";
 import AdminOrders from "./pages/admin/Orders";
+import OwaspLab from "./pages/admin/OwaspLab";
 import AdminProducts from "./pages/admin/Products";
 import AdminUsers from "./pages/admin/Users";
 import Cart from "./pages/Cart";
@@ -40,6 +41,7 @@ export default function App() {
       </Route>
       <Route path="admin" element={<RequireAuth role="admin"><AdminLayout /></RequireAuth>}>
         <Route index element={<Dashboard />} />
+        <Route path="owasp-lab" element={<OwaspLab />} />
         <Route path="logs" element={<AdminLogs />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="products" element={<AdminProducts />} />
